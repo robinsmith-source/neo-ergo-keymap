@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "schedule": [
+    "before 6am on monday"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^scripts/render\\.sh$/"
+      ],
+      "matchStrings": [
+        "keymap-drawer==(?<currentValue>[\\d.]+)"
+      ],
+      "depNameTemplate": "keymap-drawer",
+      "datasourceTemplate": "pypi"
+    }
+  ]
+}

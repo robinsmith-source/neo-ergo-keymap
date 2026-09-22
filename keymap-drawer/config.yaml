@@ -1,0 +1,97 @@
+parse_config:
+  # Setting qmk_keycode_map replaces keymap-drawer's built-in map, so the defaults are repeated below.
+  qmk_keycode_map:
+    # Neo Ergo specifics and personal label choices
+    GESC:
+      t: Esc
+      s: '`'
+    FN_MO13: Fn
+    CUSTOM(0): BT 1
+    CUSTOM(1): BT 2
+    CUSTOM(2): BT 3
+    CUSTOM(3): 2.4G
+    CUSTOM(4): USB
+    CUSTOM(5): Mode
+    NUBS: \
+    NUHS: '#'
+    MPLY: Play
+    MPRV: Prev
+    MNXT: Next
+    MUTE: Mute
+    VOLU: Vol+
+    VOLD: Vol-
+    UP: ↑
+    DOWN: ↓
+    LEFT: ←
+    RGHT: →
+    ENT: Enter
+    BSPC: Bksp
+    SPC: Space
+    # keymap-drawer defaults
+    XXXXXXX: ''
+    'NO': ''
+    MINUS: '-'
+    MINS: '-'
+    EQUAL: '='
+    EQL: '='
+    LEFT_BRACKET: '['
+    LBRC: '['
+    RIGHT_BRACKET: ']'
+    RBRC: ']'
+    BACKSLASH: \
+    BSLS: \
+    NONUS_HASH: '#'
+    SEMICOLON: ;
+    SCLN: ;
+    QUOTE: ''''
+    QUOT: ''''
+    GRAVE: '`'
+    GRV: '`'
+    COMMA: ','
+    COMM: ','
+    DOT: .
+    SLASH: /
+    SLSH: /
+    TILDE: '~'
+    TILD: '~'
+    EXCLAIM: '!'
+    EXLM: '!'
+    AT: '@'
+    HASH: '#'
+    DOLLAR: $
+    DLR: $
+    PERCENT: '%'
+    PERC: '%'
+    CIRCUMFLEX: ^
+    CIRC: ^
+    AMPERSAND: '&'
+    AMPR: '&'
+    ASTERISK: '*'
+    ASTR: '*'
+    LEFT_PAREN: (
+    LPRN: (
+    RIGHT_PAREN: )
+    RPRN: )
+    UNDERSCORE: _
+    UNDS: _
+    PLUS: +
+    LEFT_CURLY_BRACE: '{'
+    LCBR: '{'
+    RIGHT_CURLY_BRACE: '}'
+    RCBR: '}'
+    PIPE: '|'
+    COLON: ':'
+    COLN: ':'
+    DOUBLE_QUOTE: '"'
+    DQUO: '"'
+    DQT: '"'
+    LEFT_ANGLE_BRACKET: <
+    LABK: <
+    LT: <
+    RIGHT_ANGLE_BRACKET: '>'
+    RABK: '>'
+    GT: '>'
+    QUESTION: '?'
+    QUES: '?'
+draw_config:
+  dark_mode: auto
