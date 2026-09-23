@@ -94,4 +94,20 @@ parse_config:
     QUESTION: '?'
     QUES: '?'
 draw_config:
-  dark_mode: auto
+  # Styled after the real board: white case, GMK CYL Extended 2048 dark caps with colored mods, golden weight.
+  dark_mode: false
+  draw_key_sides: true
+  svg_extra_style: |
+    svg.keymap { background-color: #dcdad5; fill: #ecebe7; }
+    rect.key, rect.side { fill: #3b3c3f; stroke: #2a2b2d; }
+    rect.side { filter: brightness(70%); }
+    text.trans { fill: #8d8f93; }
+    rect.held, rect.side.held { fill: #c9a45c; }
+    .keypos-0 rect, .keypos-59 rect { fill: #ec6e70; stroke: #b9524f; }
+    .keypos-44 rect, .keypos-57 rect { fill: #e5b82a; stroke: #b08a17; }
+    .keypos-60 rect { fill: #9a84cf; stroke: #7462a8; }
+    .keypos-61 rect, .keypos-64 rect { fill: #5fb0de; stroke: #3f8bb5; }
+    .keypos-41 rect { fill: #74c4a0; stroke: #4f9c7a; }
+    .keypos-0 text, .keypos-41 text, .keypos-44 text, .keypos-57 text,
+    .keypos-59 text, .keypos-60 text, .keypos-61 text, .keypos-64 text { fill: #2a2b2d; }
+    text.label { fill: #2a2b2d; stroke: #dcdad5; }
