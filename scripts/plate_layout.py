@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Write the Neo Ergo's physical layout as a QMK-style info.json for keymap-drawer.
 
-    plate_layout.py > keymap-drawer/neo_ergo.json
+    uv run scripts/plate_layout.py > keymap-drawer/neo_ergo.json
 
 The VIA definition's layout is only an approximation of the board (wrong stagger, key sizes and
 half offsets), so key positions are measured from an orthographic top-down render of the plate
@@ -13,6 +13,7 @@ corner at (70, 447) px. Each key is centered on its switch cutout.
 import json
 import math
 import sys
+from typing import Any
 
 PX_PER_U = 57.0
 PLATE_ORIGIN = (70.0, 447.0)
@@ -54,8 +55,8 @@ KEYS = {
     (3, 4): (429.2, 664.8, 1, 1),
     (3, 5): (485.3, 674.7, 1, 1),
     (3, 6): (541.3, 684.5, 1, 1),
-    (4, 3): (384.3, 714.6, 1.5, 1),  # cutouts for 1u and 1.5u merge
-    (4, 6): (489.6, 731.7, 2.25, 1),  # cutouts for 2.25u and 2.75u merge
+    (4, 3): (384.3, 714.6, 1, 1),  # cutouts for 1u and 1.5u merge
+    (4, 6): (489.6, 731.7, 2.75, 1),  # cutouts for 2.25u and 2.75u merge
     # right, rotated
     (0, 8): (667.5, 507.4, 1, -1),
     (0, 9): (723.6, 497.5, 1, -1),
@@ -96,16 +97,16 @@ KEYS = {
 }
 
 # Where merged cutouts don't pin a key down, shift it along its rotated row (in u) to the chosen option.
-MERGED_SHIFT = {(4, 3): 0.125, (4, 6): 0.125, (4, 7): -0.0625, (4, 10): -0.0625}
+MERGED_SHIFT = {(4, 7): -0.0625, (4, 10): -0.0625}
 
 
-def key(matrix, cx, cy, w, side):
+def key(matrix: tuple[int, int], cx: float, cy: float, w: float, side: int) -> dict[str, Any]:
     r = ROTATION * side
     shift = MERGED_SHIFT.get(matrix, 0) * PX_PER_U
     cx += shift * math.cos(math.radians(r))
     cy += shift * math.sin(math.radians(r))
-    x, y = [round((c - o) / PX_PER_U, 3) for c, o in zip((cx, cy), PLATE_ORIGIN)]
-    out = {"matrix": list(matrix), "x": round(x - w / 2, 3), "y": round(y - 0.5, 3)}
+    x, y = (round((c - o) / PX_PER_U, 3) for c, o in zip((cx, cy), PLATE_ORIGIN, strict=True))
+    out: dict[str, Any] = {"matrix": list(matrix), "x": round(x - w / 2, 3), "y": round(y - 0.5, 3)}
     if w != 1:
         out["w"] = w
     if r:
@@ -113,14 +114,19 @@ def key(matrix, cx, cy, w, side):
     return out
 
 
-layout = sorted((key(m, *v) for m, v in KEYS.items()), key=lambda k: (k["matrix"][0], k["x"]))
-json.dump(
-    {
-        "keyboard_name": "Neo Ergo",
-        "matrix_size": {"rows": 5, "cols": 15},
-        "layouts": {"LAYOUT": {"layout": layout}},
-    },
-    sys.stdout,
-    indent=2,
-)
-print()
+def main() -> None:
+    layout = sorted((key(m, *v) for m, v in KEYS.items()), key=lambda k: (k["matrix"][0], k["x"]))
+    json.dump(
+        {
+            "keyboard_name": "Neo Ergo",
+            "matrix_size": {"rows": 5, "cols": 15},
+            "layouts": {"LAYOUT": {"layout": layout}},
+        },
+        sys.stdout,
+        indent=2,
+    )
+    print()
+
+
+if __name__ == "__main__":
+    main()

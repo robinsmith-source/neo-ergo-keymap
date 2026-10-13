@@ -6,21 +6,45 @@ on:
   pull_request:
 
 permissions:
-  contents: write
+  contents: read
+
+env:
+  UV_LOCKED: 1
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  render:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
-      - run: scripts/render.sh
-      # Publish as a single orphan commit so main never carries generated files.
-      - if: github.event_name == 'push'
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+      - run: uv run ruff check --output-format=github
+      - run: uv run ruff format --check
+      - run: uv run ty check
+
+  render:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+      - run: uv run scripts/render.py
+      # Single orphan commit, force-pushed, so the branch never accumulates old images.
+      - name: Publish to images branch
+        if: github.event_name == 'push'
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           blob=$(git hash-object -w build/keymap.svg)
           tree=$(printf '100644 blob %s\tkeymap.svg\n' "$blob" | git mktree)
           commit=$(git commit-tree "$tree" -m "chore: render keymap")
-          git push --force origin "$commit:refs/heads/images"
+          git push --force --quiet origin "$commit:refs/heads/images"

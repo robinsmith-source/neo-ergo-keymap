@@ -1,22 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
   ],
   "schedule": [
     "before 6am on monday"
   ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/^scripts/render\\.sh$/"
-      ],
-      "matchStrings": [
-        "keymap-drawer==(?<currentValue>[\\d.]+)"
-      ],
-      "depNameTemplate": "keymap-drawer",
-      "datasourceTemplate": "pypi"
-    }
-  ]
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }

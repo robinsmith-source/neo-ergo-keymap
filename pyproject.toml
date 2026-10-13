@@ -1,0 +1,22 @@
+[project]
+name = "neo-ergo-keymap"
+version = "0.1.0"
+description = "Neo Ergo keymap, configured with VIA and drawn with keymap-drawer"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "keymap-drawer>=0.23.0",
+    "pyyaml>=6.0.3",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.16.8", "ty>=0.0.83"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = ["I", "UP", "B", "SIM", "RUF"]
